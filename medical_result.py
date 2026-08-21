@@ -2,16 +2,11 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# ============================================================
-# LOAD MODEL
-# ============================================================
 
+# LOAD MODEL
 model = joblib.load("medical_result_model.pkl")
 
-
-# ============================================================
 # PAGE CONFIGURATION
-# ============================================================
 
 st.set_page_config(
     page_title="Medical Result Predictor",
@@ -32,10 +27,7 @@ st.info(
 )
 
 
-# ============================================================
 # INPUT FEATURES
-# ============================================================
-
 age = st.number_input(
     "Age",
     min_value=1,
@@ -92,16 +84,12 @@ troponin = st.number_input(
     value=0.1
 )
 
-
-# ============================================================
 # PREDICTION
-# ============================================================
 
 if st.button("Predict Result", type="primary"):
 
-    # --------------------------------------------------------
     # CREATE INPUT DATAFRAME
-    # --------------------------------------------------------
+   
 
     input_data = pd.DataFrame({
         "Age": [age],
@@ -114,9 +102,9 @@ if st.button("Predict Result", type="primary"):
         "Troponin": [troponin]
     })
 
-    # --------------------------------------------------------
+    
     # FORCE EXACT TRAINING FEATURE ORDER
-    # --------------------------------------------------------
+   
 
     feature_order = [
         "Age",
@@ -131,9 +119,9 @@ if st.button("Predict Result", type="primary"):
 
     input_data = input_data[feature_order]
 
-    # --------------------------------------------------------
+  
     # PREDICTION
-    # --------------------------------------------------------
+
 
     prediction = model.predict(input_data)[0]
 
@@ -142,9 +130,8 @@ if st.button("Predict Result", type="primary"):
     negative_probability = probabilities[0]
     positive_probability = probabilities[1]
 
-    # --------------------------------------------------------
     # DISPLAY RESULT
-    # --------------------------------------------------------
+ 
 
     st.subheader("Prediction Result")
 
@@ -156,9 +143,9 @@ if st.button("Predict Result", type="primary"):
 
         st.success("🟢 Prediction: NEGATIVE")
 
-    # --------------------------------------------------------
+  
     # DISPLAY PROBABILITIES
-    # --------------------------------------------------------
+   
 
     st.write(
         f"Negative Probability: "
@@ -170,17 +157,15 @@ if st.button("Predict Result", type="primary"):
         f"{positive_probability:.2%}"
     )
 
-    # --------------------------------------------------------
     # DISPLAY INPUTS
-    # --------------------------------------------------------
+   
 
     with st.expander("View Input Data"):
 
         st.dataframe(input_data)
 
-    # --------------------------------------------------------
     # DEBUG INFORMATION
-    # --------------------------------------------------------
+   
 
     with st.expander("Model Information"):
 
